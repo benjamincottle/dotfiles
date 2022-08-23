@@ -319,7 +319,7 @@ screens = [
                 widget.Spacer(length=10),
                 widget.CheckUpdates(
                     update_interval = 1800,
-                    distro = "Arch_yay",
+                    distro = "Arch_checkupdates",
                     display_format = "",
                     no_update_string = "",
                     foreground=colour[2],
