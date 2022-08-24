@@ -7,22 +7,6 @@ from libqtile.utils import guess_terminal
 from qtile_extras import widget
 from qtile_extras.popup.toolkit import PopupGridLayout, PopupRelativeLayout, PopupImage, PopupText, PopupWidget
 
-@lazy.window.function
-def move_floating_window(window, x: int = 0, y: int = 0):
-    new_x = window.float_x + x
-    new_y = window.float_y + y
-    window.cmd_set_position_floating(new_x, new_y)
-
-
-@lazy.window.function 
-def resize_floating_window(window, width: int = 0, height: int = 0): 
-    window.cmd_set_size_floating(window.width + width, window.height + height)
-
-
-def cal():
-    curr_cal=subprocess.run(["cal", "--one", "--monday"], stdout=subprocess.PIPE)
-    return curr_cal.stdout.decode()
-
 
 def show_cal(qtile):
     controls = [
@@ -33,7 +17,7 @@ def show_cal(qtile):
             height=1.0,
             widget=widget.GenPollText(
                 foreground=colour[2],
-                func=cal,
+                func=lambda: subprocess.run(["cal", "--one", "--monday"], stdout=subprocess.PIPE).stdout.decode() 
             ),
             can_focus=True,
             highlight=None,
@@ -121,57 +105,54 @@ terminal = guess_terminal()
 browser = "google-chrome-stable"
 filemanager = "pcmanfm"
 text_editor = "subl"
+app_launcher = "rofi -show drun -theme ~/.config/rofi/rofi.rasi"
 
 keys = [
     Key([mod], "h", lazy.layout.left(), desc="Move focus to left"),
     Key([mod], "l", lazy.layout.right(), desc="Move focus to right"),
     Key([mod], "j", lazy.layout.down(), desc="Move focus down"),
     Key([mod], "k", lazy.layout.up(), desc="Move focus up"),
-    Key([mod, "control"], "space", lazy.layout.next(), desc="Move window focus to other window"),
 
     Key([mod, "shift"], "h", lazy.layout.shuffle_left(), desc="Move window to the left"),
     Key([mod, "shift"], "l", lazy.layout.shuffle_right(), desc="Move window to the right"),
     Key([mod, "shift"], "j", lazy.layout.shuffle_down(), desc="Move window down"),
     Key([mod, "shift"], "k", lazy.layout.shuffle_up(), desc="Move window up"),
 
-    Key([mod], "o", lazy.layout.grow(), desc="grow window"),
-    Key([mod], "i", lazy.layout.shrink(), desc="shrink window"),
-    Key([mod], "m", lazy.layout.maximize(), desc="maximise window"),
+    Key([mod], "o", lazy.layout.grow(), desc="Grow window"),
+    Key([mod], "i", lazy.layout.shrink(), desc="Shrink window"),
+    Key([mod], "m", lazy.layout.maximize(), desc="Maximise window"),
     Key([mod], "n", lazy.layout.reset(), desc="Reset all window sizes"),
     Key([mod, "shift"], "n", lazy.layout.normalize(), desc="Reset secondary window sizes"),
-    Key([mod, "shift"], "space", lazy.layout.flip()),
-
-    Key([mod, 'shift'], "u", move_floating_window(x=10), desc="move window right"),
-    Key([mod, 'shift'], 'y', move_floating_window(x=-10), desc="move window left"),
-    Key([mod, 'shift'], 'i', move_floating_window(y=10), desc="move window down"),
-    Key([mod, 'shift'], 'o', move_floating_window(y=-10), desc="move window up"),
+    Key([mod, "shift"], "space", lazy.layout.flip(), desc="Flip main window and stack"),
     Key([mod], "t", lazy.window.toggle_floating(), desc='Toggle floating'),
-    Key([mod, "control"], "h", resize_floating_window(width=-10), desc='decrease window width'), 
-    Key([mod, "control"], "l", resize_floating_window(width=10), desc='increase window width'), 
-    Key([mod, "control"], "j", resize_floating_window(height=-10), desc='decrease window height'),
-    Key([mod, "control"], "k", resize_floating_window(height=10), desc='increase window height'), 
-    # Keyboard multimedia keys
+    Key([mod], "x", lazy.window.toggle_fullscreen(), desc='Toggle fullscreen'),
+    Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
+
+    Key([mod], "Left", lazy.screen.prev_group(), desc="Switch to previous group"),
+    Key([mod], "Right", lazy.screen.next_group(), desc="Switch to next group"),
+    Key([mod], "Down", lazy.screen.toggle_group(), desc="Switch last visited group"),
+
+    Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
+    Key([mod], "period", lazy.spawn(app_launcher), desc="App launcher"),
+    Key([mod], "b", lazy.spawn(browser), desc="Launch browser"),
+    Key([mod], "f", lazy.spawn(filemanager), desc="Launch file manager"),
+    Key([mod], "e", lazy.spawn(text_editor), desc="Launch text editor"),
+    Key([mod], "g", lazy.function(show_graphs), desc="Show simple performance graphs"),
+    Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
+    Key([mod], "space", lazy.widget["keyboardlayout"].next_keyboard(), desc="Next keyboard layout."),
+
+    Key([mod], "Tab", lazy.next_layout(), desc="Move to next layout"),
+    Key([mod, "shift"], "Tab", lazy.prev_layout(), desc="Move to previous layout"),
+
     Key([], "XF86AudioMute", lazy.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle"), desc="Toggle mute"),
     Key([], "XF86AudioLowerVolume", lazy.spawn("pactl -- set-sink-volume @DEFAULT_SINK@ -5%"), desc="Lower volume"),
     Key([], "XF86AudioRaiseVolume", lazy.spawn("pactl -- set-sink-volume @DEFAULT_SINK@ +5%"), desc="Raise volume"),
     Key([], "XF86MonBrightnessUp", lazy.spawn("xbacklight -inc 5"), desc="Increase brightness"),
     Key([], "XF86MonBrightnessDown", lazy.spawn("xbacklight -dec 5"), desc="Increase brightness"),
-    # Launch importants
-    Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
-    Key([mod], "period", lazy.spawn("rofi -show drun -theme ~/.config/rofi/rofi.rasi"), desc="App launcher"),
-    Key([mod], "b", lazy.spawn(browser), desc="Launch browser"),
-    Key([mod], "f", lazy.spawn(filemanager), desc="Launch filemanager"),
-    Key([mod], "s", lazy.spawn(text_editor), desc="Launch text editor"),
-    Key([mod, "shift"], "g", lazy.function(show_graphs)),
-    # Toggle between different layouts as defined below
-    Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
-    Key([mod, "shift"], "Tab", lazy.prev_layout(), desc="Toggle between layouts"),
-    Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
+
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
-    Key([mod, "control"], "q", lazy.spawn(terminal + " -e shutdown now"), desc="Shutdown computer"),
-    Key([mod, "control", "shift"], "q", lazy.shutdown(), desc="Quit qtile"),
-    Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
-    Key([mod], "space", lazy.widget["keyboardlayout"].next_keyboard(), desc="Next keyboard layout.")
+    Key([mod, "control"], "q", lazy.shutdown(), desc="Quit qtile"),
+    Key([mod, "control"], "s", lazy.spawn("shutdown now"), desc="Shutdown computer"),
 ]
 
 groups = [Group(i) for i in "123456789"]
@@ -189,7 +170,7 @@ for i in groups:
                 [mod, "shift"],
                 i.name,
                 lazy.window.togroup(i.name, switch_group=True),
-                desc="Switch to & move focused window to group {}".format(i.name),
+                desc="Switch & move focused window to group {}".format(i.name),
             ),
         ]
     )
@@ -202,8 +183,8 @@ nord = [
     ]
 
 colour = [
-        "#212529", "#6c6f74", "#81858b"
-        ]
+    "#212529", "#6c6f74", "#81858b"
+    ]
 
 layout_theme = {
     "border_width": 2,
@@ -269,12 +250,6 @@ screens = [
                 widget.WindowName(
                     foreground=colour[2]
                 ),
-                #widget.Chord(
-                #    chords_colors={
-                #        "launch": ("#ff0000", "#ffffff"),
-                #    },
-                #    name_transform=lambda name: name.upper(),
-                #),
                 widget.TextBox(
                     text="盛",
                     foreground=colour[2],
@@ -345,28 +320,17 @@ screens = [
                     mouse_callbacks = {'Button1': lazy.widget["keyboardlayout"].next_keyboard()},
                 ),
                 widget.Spacer(length=15),
-                #widget.QuickExit(
-                #    default_text=" [ x ] ", 
-                #    countdown_start=3, 
-                #    countdown_format=" [ {} ] ", 
-                #    foreground=colour[2],
-                #    mouse_callbacks = {'Button3': lambda:
-                #        qtile.cmd_spawn(terminal + ' -e shutdown -h now')},
-                #),
             ],
             24,
-            # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
-            # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
             background = colour[0],
         ),
     ),
 ]
 
-# Drag floating layouts.
 mouse = [
     Drag([mod], "Button1", lazy.window.set_position_floating(), start=lazy.window.get_position()),
-    Drag([mod], "Button3", lazy.window.set_size_floating(), start=lazy.window.get_size()),
     Click([mod], "Button2", lazy.window.bring_to_front()),
+    Drag([mod], "Button3", lazy.window.set_size_floating(), start=lazy.window.get_size()),
 ]
 
 dgroups_key_binder = None
