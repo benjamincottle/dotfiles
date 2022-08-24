@@ -1,41 +1,11 @@
 import os
 import subprocess
 from libqtile import qtile, bar, layout, hook
-from libqtile.config import Click, Drag, Group, Key, Match, Screen
+from libqtile.config import Click, Drag, Group, Key, Match, Screen, ScratchPad, DropDown
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 from qtile_extras import widget
 from qtile_extras.popup.toolkit import PopupGridLayout, PopupRelativeLayout, PopupImage, PopupText, PopupWidget
-
-
-def show_cal(qtile):
-    controls = [
-        PopupWidget(
-            pos_x=0.05,
-            pos_y=0.05,
-            width=1.0,
-            height=1.0,
-            widget=widget.GenPollText(
-                foreground=colour[2],
-                func=lambda: subprocess.run(["cal", "--one", "--monday"], stdout=subprocess.PIPE).stdout.decode() 
-            ),
-            can_focus=True,
-            highlight=None,
-        ),
-    ]
-
-    layout = PopupRelativeLayout(
-                 qtile,
-                 margin=0,
-                 width=180,
-                 height=155,
-                 controls=controls,
-                 background=colour[0],
-                 initial_focus=None,
-                 close_on_click=True,
-              )
-
-    layout.show(x=1155, y=30, centered=False, warp_pointer=False)
 
 
 def show_graphs(qtile):
@@ -207,6 +177,11 @@ widget_defaults = dict(
 )
 extension_defaults = widget_defaults.copy()
 
+groups.append(ScratchPad('scratchpad', [
+    DropDown('calendar', 'yad --no-buttons --calendar', x=0.84, y=0.01, width=0.1, height=0.2, opacity=1)
+    ]
+))
+
 screens = [
     Screen(
         top=bar.Bar(
@@ -310,7 +285,8 @@ screens = [
                         format="%a %d %b, %H:%M:%S", 
                         foreground=colour[2],
                         update_interval=5,
-                        mouse_callbacks = {'Button1': lazy.function(show_cal)},
+                        #mouse_callbacks = {'Button1': lazy.function(show_cal)},
+                        mouse_callbacks = {'Button1': lazy.group['scratchpad'].dropdown_toggle('calendar')},
                 ),
                 widget.Spacer(length=10),
                 widget.KeyboardLayout(
