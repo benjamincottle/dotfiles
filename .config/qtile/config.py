@@ -249,12 +249,14 @@ screens = [
                     format="{percent:2.0%}",
                 ),
                 widget.Spacer(length=11),
-                widget.WiFiIcon(
-                    active_colour=colour[2],
-                    expanded_timeout=3,
+                widget.Wlan(
                     foreground=colour[2],
-                    inactive_colour=nord[3],
-                    padding_y=5,
+                    fontsize=28,
+                    format="",
+                    disconnected_message="睊",
+                    interface="wlan0",
+                    mouse_callbacks = {'Button1': lambda:
+                        qtile.cmd_spawn("iwgtk")},
                 ),
                 widget.Spacer(length=9),
                 widget.PulseVolume(
