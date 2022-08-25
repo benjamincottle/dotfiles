@@ -295,13 +295,16 @@ screens = [
                     mouse_callbacks = {'Button1': lambda:
                         qtile.cmd_spawn(terminal + ' -e yay')},
                 ),
-                widget.Systray(),
+                widget.Systray(
+                    padding=5,
+                    icon_size=26,
+                ),
                 widget.Spacer(length=10),
                 widget.Clock(
-                        format="%a %d %b, %H:%M:%S", 
-                        foreground=colour[2],
-                        update_interval=5,
-                        mouse_callbacks = {'Button1': lazy.group['scratchpad'].dropdown_toggle('calendar')},
+                    format="%a %d %b, %H:%M:%S", 
+                    foreground=colour[2],
+                    update_interval=5,
+                    mouse_callbacks = {'Button1': lazy.group['scratchpad'].dropdown_toggle('calendar')},
                 ),
                 widget.Spacer(length=10),
                 widget.KeyboardLayout(
