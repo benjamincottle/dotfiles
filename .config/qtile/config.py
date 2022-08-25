@@ -70,7 +70,7 @@ def show_graphs(qtile):
 
 
 mod = "mod4"
-terminal = "xterm"
+terminal = "alacritty"
 browser = "google-chrome-stable"
 filemanager = "pcmanfm"
 text_editor = "subl"
