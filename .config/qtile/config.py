@@ -9,21 +9,25 @@ from qtile_extras.popup.toolkit import PopupGridLayout, PopupRelativeLayout, Pop
 
 def show_graphs(qtile):
     controls = [
-        PopupText(
-            text="    CPU",
-            font="Hack Nerd Font Mono",
-            fontsize=14,
-            foreground=colour[2],
+        PopupWidget(
             row=0,
             col=0,
+            widget=widget.CPU(
+                foreground=colour[2],
+                format="    CPU {freq_current}GHz {load_percent}%"
+            ),
+            can_focus=True,
+            highlight=None,
         ),
-        PopupText(
-            text="    Memory",
-            font="Hack Nerd Font Mono",
-            fontsize=14,
-            foreground=colour[2],
+        PopupWidget(
             row=0,
             col=1,
+            widget=widget.Memory(
+                foreground=colour[2],
+                format="   MEM {MemUsed: .0f}{mm} /{MemTotal: .0f}{mm}" 
+            ),
+            can_focus=True,
+            highlight=None,
         ),
         PopupWidget(
             row=1,
