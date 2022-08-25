@@ -3,7 +3,6 @@ import subprocess
 from libqtile import qtile, bar, layout, hook
 from libqtile.config import Click, Drag, Group, Key, Match, Screen, ScratchPad, DropDown
 from libqtile.lazy import lazy
-from libqtile.utils import guess_terminal
 from qtile_extras import widget
 from qtile_extras.popup.toolkit import PopupGridLayout, PopupRelativeLayout, PopupImage, PopupText, PopupWidget
 
@@ -71,7 +70,7 @@ def show_graphs(qtile):
 
 
 mod = "mod4"
-terminal = guess_terminal()
+terminal = "alacritty"
 browser = "google-chrome-stable"
 filemanager = "pcmanfm"
 text_editor = "subl"
@@ -177,10 +176,21 @@ widget_defaults = dict(
 )
 extension_defaults = widget_defaults.copy()
 
-groups.append(ScratchPad('scratchpad', [
-    DropDown('calendar', 'yad --no-buttons --calendar', x=0.84, y=0.01, width=0.1, height=0.2, opacity=1)
-    ]
-))
+groups.append(
+    ScratchPad(
+        'scratchpad', [
+            DropDown(
+                'calendar', 
+                'yad --no-buttons --calendar', 
+                x=0.84, 
+                y=0.01, 
+                width=0.1, 
+                height=0.2, 
+                opacity=1,
+            )
+        ]
+    )
+)
 
 screens = [
     Screen(
@@ -285,7 +295,6 @@ screens = [
                         format="%a %d %b, %H:%M:%S", 
                         foreground=colour[2],
                         update_interval=5,
-                        #mouse_callbacks = {'Button1': lazy.function(show_cal)},
                         mouse_callbacks = {'Button1': lazy.group['scratchpad'].dropdown_toggle('calendar')},
                 ),
                 widget.Spacer(length=10),
@@ -314,17 +323,12 @@ dgroups_app_rules = []  # type: list
 follow_mouse_focus = True
 bring_front_click = False
 cursor_warp = False
+
 floating_layout = layout.Floating(
-    **layout_theme,
+    border_width= 0,
     float_rules=[
         # Run the utility of `xprop` to see the wm class and name of an X client.
         *layout.Floating.default_float_rules,
-        Match(wm_class="confirmreset"),  # gitk
-        Match(wm_class="makebranch"),  # gitk
-        Match(wm_class="maketag"),  # gitk
-        Match(wm_class="ssh-askpass"),  # ssh-askpass
-        Match(title="branchdialog"),  # gitk
-        Match(title="pinentry"),  # GPG key password entry
         Match(title="Volume Control"),
         Match(title="iwgtk"),
         Match(title="Customize Look and Feel"),
