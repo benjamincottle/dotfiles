@@ -36,12 +36,10 @@ set ruler
 nmap <leader>w :w!<cr>
 
 " :W sudo saves the file
-" (useful for handling the permission-denied error)
 command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
 
-" Set 7 lines to the cursor - when moving vertically using j/k
+" Set N lines to the cursor - when moving vertically using j/k
 set scrolloff=10
-" Enable auto completion menu after pressing TAB.
 "
 " Turn on the Wild menu
 set wildmenu
@@ -115,8 +113,11 @@ set tabstop=4
 
 "Auto indent
 set autoindent
+
 "Smart indent
 set smartindent
+
+"No line wrap
 set nowrap
 
 " Rendering
