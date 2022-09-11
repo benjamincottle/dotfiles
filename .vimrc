@@ -96,6 +96,10 @@ set timeoutlen=500
 " Encoding
 set encoding=utf-8
 
+" netrw settings
+let g:netrw_banner = 0
+let g:netrw_liststyle = 3
+
 " Turn backup off
 set nobackup
 set nowritebackup
