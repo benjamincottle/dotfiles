@@ -1,4 +1,5 @@
 import os
+import psutil
 import subprocess
 from libqtile import qtile, bar, layout, hook
 from libqtile.config import Click, Drag, Group, Key, Match, Screen, ScratchPad, DropDown
@@ -109,7 +110,6 @@ keys = [
     Key([mod], "period", lazy.spawn(app_launcher), desc="App launcher"),
     Key([mod], "b", lazy.spawn(browser), desc="Launch browser"),
     Key([mod], "f", lazy.spawn(filemanager), desc="Launch file manager"),
-    Key([mod], "e", lazy.spawn(text_editor), desc="Launch text editor"),
     Key([mod], "g", lazy.function(show_graphs), desc="Show simple performance graphs"),
     Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
     Key([mod], "space", lazy.widget["keyboardlayout"].next_keyboard(), desc="Next keyboard layout."),
@@ -123,6 +123,7 @@ keys = [
     Key([], "XF86MonBrightnessUp", lazy.spawn("xbacklight -inc 5"), desc="Increase brightness"),
     Key([], "XF86MonBrightnessDown", lazy.spawn("xbacklight -dec 5"), desc="Increase brightness"),
 
+    Key([mod, "control"], "b", lazy.hide_show_bar(position="top"), desc="Toggle qtile bar"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Quit qtile"),
     Key([mod, "control"], "s", lazy.spawn("shutdown now"), desc="Shutdown computer"),
@@ -186,7 +187,7 @@ groups.append(
             DropDown(
                 'calendar', 
                 'yad --no-buttons --calendar', 
-                x=0.84, 
+                x=0.83, 
                 y=0.01, 
                 width=0.1, 
                 height=0.2, 
@@ -196,129 +197,129 @@ groups.append(
     )
 )
 
-screens = [
-    Screen(
-        top=bar.Bar(
-            [
-                widget.Spacer(length=10),
-                widget.CurrentLayoutIcon(
-                    foreground=colour[2],
-                    use_mask=True,
-                    scale=0.8,
-                ),
-                widget.Spacer(length=5),
-                widget.CurrentLayout(
-                    foreground=colour[2], 
-                    width=75,
-                ),
-                widget.Spacer(length=5),
-                widget.GroupBox(
-                    active=colour[2],
-                    borderwidth=1,
-                    inactive=nord[3],
-                    this_screen_border=colour[2],
-                    this_current_screen_border=colour[2],
-                    urgent_border=nord[11],
-                    urgent_text=nord[11],
-                    other_screen_border=nord[3],
-                    other_current_screen_border=nord[3],
-                    hide_unused=True,
-                    fontsize=10,
-                    padding_y=2,
-                    padding_x=6,
-                    margin_x=0,
-                    margin_y=3,
-                ),
-                widget.Spacer(length=10),
-                widget.Prompt(
-                    padding=20,
-                    foreground=colour[2], 
-                    cursor_color=colour[2],
-                    prompt="run: ",
-                ),
-                widget.WindowName(
-                    foreground=colour[2]
-                ),
-                widget.TextBox(
-                    text="盛",
-                    foreground=colour[2],
-                    fontsize=22,
-                ),
-                widget.Spacer(length=5),
-                widget.Backlight(
-                    backlight_name="intel_backlight",
-                    foreground=colour[2],
-                    markup=True,
-                    step=5,
-                    format="{percent:2.0%}",
-                ),
-                widget.Spacer(length=11),
-                widget.Wlan(
-                    foreground=colour[2],
-                    fontsize=28,
-                    format="",
-                    disconnected_message="睊",
-                    interface="wlan0",
-                    mouse_callbacks = {'Button1': lambda:
-                        qtile.cmd_spawn("iwgtk")},
-                ),
-                widget.Spacer(length=9),
-                widget.PulseVolume(
-                    emoji=True,
-                    foreground=colour[2],
-                    volume_app="pavucontrol",
-                    fontsize=16,
-                ),
-                widget.Spacer(length=10),
-                widget.UPowerWidget(
-                    battery_height=10,
-                    battery_width=20,
-                    border_charge_colour=nord[7],
-                    border_colour=colour[2],
-                    border_critical_colour=nord[11],
-                    fill_critical=nord[11],
-                    fill_low=nord[12],
-                    fill_normal=colour[2],
-                    text_displaytime=3,
-                    foreground=colour[2],
-                ),
-                widget.Spacer(length=10),
-                widget.CheckUpdates(
-                    update_interval = 1800,
-                    distro = "Arch_checkupdates",
-                    display_format = "",
-                    no_update_string = "",
-                    foreground=colour[2],
-                    fontsize=28,
-                    colour_have_updates=nord[7],
-                    colour_no_updates=colour[2],
-                    mouse_callbacks = {'Button1': lambda:
-                        qtile.cmd_spawn(terminal + ' -e yay')},
-                ),
-                widget.Systray(
-                    padding=5,
-                    icon_size=26,
-                ),
-                widget.Spacer(length=10),
-                widget.Clock(
-                    format="%a %d %b, %H:%M:%S", 
-                    foreground=colour[2],
-                    update_interval=5,
-                    mouse_callbacks = {'Button1': lazy.group['scratchpad'].dropdown_toggle('calendar')},
-                ),
-                widget.Spacer(length=10),
-                widget.KeyboardLayout(
-                    foreground=colour[2],
-                    configured_keyboards=['us', 'dk'],
-                    display_map={'us': 'en', 'dk': 'dk'},
-                    mouse_callbacks = {'Button1': lazy.widget["keyboardlayout"].next_keyboard()},
-                ),
-                widget.Spacer(length=15),
-            ],
-            24,
-            background = colour[0],
+top=bar.Bar(
+    [
+        widget.Spacer(length=10),
+        widget.CurrentLayoutIcon(
+            foreground=colour[2],
+            use_mask=True,
+            scale=0.8,
         ),
-    ),
+        widget.Spacer(length=5),
+        widget.CurrentLayout(
+            foreground=colour[2], 
+            width=75,
+        ),
+        widget.Spacer(length=5),
+        widget.GroupBox(
+            active=colour[2],
+            borderwidth=1,
+            inactive=nord[3],
+            this_screen_border=colour[2],
+            this_current_screen_border=colour[2],
+            urgent_border=nord[11],
+            urgent_text=nord[11],
+            other_screen_border=nord[3],
+            other_current_screen_border=nord[3],
+            hide_unused=True,
+            fontsize=10,
+            padding_y=2,
+            padding_x=6,
+            margin_x=0,
+            margin_y=3,
+        ),
+        widget.Spacer(length=10),
+        widget.Prompt(
+            padding=20,
+            foreground=colour[2], 
+            cursor_color=colour[2],
+            prompt="run: ",
+        ),
+        widget.WindowName(
+            foreground=colour[2]
+        ),
+        widget.TextBox(
+            text="盛",
+            foreground=colour[2],
+            fontsize=22,
+        ),
+        widget.Spacer(length=5),
+        widget.Backlight(
+            backlight_name="intel_backlight",
+            foreground=colour[2],
+            markup=True,
+            step=5,
+            format="{percent:2.0%}",
+        ),
+        widget.Spacer(length=11),
+        widget.Wlan(
+            foreground=colour[2],
+            fontsize=28,
+            format="",
+            disconnected_message="睊",
+            interface="wlan0",
+            mouse_callbacks = {'Button1': lambda:
+                qtile.cmd_spawn("iwgtk")},
+        ),
+        widget.Spacer(length=9),
+        widget.PulseVolume(
+            emoji=True,
+            foreground=colour[2],
+            volume_app="pavucontrol",
+            fontsize=16,
+        ),
+        widget.Spacer(length=10),
+        widget.UPowerWidget(
+            battery_height=10,
+            battery_width=20,
+            border_charge_colour=nord[7],
+            border_colour=colour[2],
+            border_critical_colour=nord[11],
+            fill_critical=nord[11],
+            fill_low=nord[12],
+            fill_normal=colour[2],
+            text_displaytime=3,
+            foreground=colour[2],
+        ),
+        widget.Spacer(length=10),
+        widget.CheckUpdates(
+            update_interval = 1800,
+            distro = "Arch_checkupdates",
+            display_format = "",
+            no_update_string = "",
+            foreground=colour[2],
+            fontsize=28,
+            colour_have_updates=nord[7],
+            colour_no_updates=colour[2],
+            mouse_callbacks = {'Button1': lambda:
+                qtile.cmd_spawn(terminal + ' -e yay')},
+        ),
+        widget.Systray(
+            padding=5,
+            icon_size=26,
+        ),
+        widget.Spacer(length=10),
+        widget.Clock(
+            format="%a %d %b, %H:%M:%S", 
+            foreground=colour[2],
+            update_interval=5,
+            mouse_callbacks = {'Button1': lazy.group['scratchpad'].dropdown_toggle('calendar')},
+        ),
+        widget.Spacer(length=10),
+        widget.KeyboardLayout(
+            foreground=colour[2],
+            configured_keyboards=['us', 'dk'],
+            display_map={'us': 'en', 'dk': 'dk'},
+            mouse_callbacks = {'Button1': lazy.widget["keyboardlayout"].next_keyboard()},
+        ),
+        widget.Spacer(length=15),
+    ],
+    24,
+    background = colour[0],
+)
+
+screens = [
+    Screen(top=top),
 ]
 
 mouse = [
@@ -352,10 +353,34 @@ reconfigure_screens = True
 # focus, should we respect this or not?
 auto_minimize = True
 
+@hook.subscribe.client_new
+def _swallow(window):
+    pid = window.window.get_net_wm_pid()
+    ppid = psutil.Process(pid).ppid()
+    cpids = {c.window.get_net_wm_pid(): wid for wid, c in window.qtile.windows_map.items()}
+    for i in range(5):
+        if not ppid:
+            return
+        if ppid in cpids:
+            parent = window.qtile.windows_map.get(cpids[ppid])
+            parent.minimized = True
+            window.parent = parent
+            return
+        ppid = psutil.Process(ppid).ppid()
+
+@hook.subscribe.client_killed
+def _unswallow(window):
+    if hasattr(window, 'parent'):
+        window.parent.minimized = False
+
 @hook.subscribe.startup_once
 def start_once():
     home = os.path.expanduser('~')
     subprocess.call([home + '/.config/qtile/autostart.sh'])
+
+@hook.subscribe.startup
+def startup():
+    top.show(False)
 
 # When using the Wayland backend, this can be used to configure input devices.
 wl_input_rules = None
