@@ -78,7 +78,6 @@ mod = "mod4"
 terminal = "alacritty"
 browser = "google-chrome-stable"
 filemanager = "pcmanfm"
-text_editor = "subl"
 app_launcher = "rofi -show drun -theme ~/.config/rofi/rofi.rasi"
 
 keys = [
