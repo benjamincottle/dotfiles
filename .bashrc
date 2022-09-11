@@ -66,6 +66,17 @@ fi
 
 test -r "~/.dir_colors" && eval $(dircolors ~/.dir_colors)
 
-if [ -r "/usr/bin/colorscript" ] ; then
-    colorscript random
-fi
+# pretty colour bars :D
+echo
+for f in {0..6}; do
+	echo -en "\033[$((f+41))m\033[$((f+30))m██▓▒░"
+done
+echo -en "\033[37m██\n"
+echo
+for f in {0..6}; do
+	echo -en "\033[$((f+41))m\033[1;$((f+90))m██▓▒░"
+done
+echo -en "\033[1;37m██"
+echo -e "\033[0m"
+echo
+
