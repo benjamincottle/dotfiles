@@ -202,23 +202,23 @@ c.colors.downloads.error.bg = nord['nord11']
 
 ## Foreground color for downloads with errors.
 ## Type: QtColor
-c.colors.downloads.error.fg = nord['nord5']
+c.colors.downloads.error.fg = nord['nord0']
 
 ## Color gradient start for download backgrounds.
 ## Type: QtColor
-# c.colors.downloads.start.bg = '#0000aa'
+c.colors.downloads.start.bg = nord['nord0'] #'#0000aa'
 
 ## Color gradient start for download text.
 ## Type: QtColor
-# c.colors.downloads.start.fg = 'white'
+c.colors.downloads.start.fg = nord['nord5']
 
 ## Color gradient stop for download backgrounds.
 ## Type: QtColor
-c.colors.downloads.stop.bg = nord['nord15']
+c.colors.downloads.stop.bg = nord['nord0']
 
 ## Color gradient end for download text.
 ## Type: QtColor
-# c.colors.downloads.stop.fg = 'white'
+c.colors.downloads.stop.fg = nord['nord5']
 
 ## Color gradient interpolation system for download backgrounds.
 ## Type: ColorSystem
@@ -321,7 +321,7 @@ c.colors.prompts.selected.bg = nord['nord3']
 
 ## Background color of the statusbar in caret mode.
 ## Type: QssColor
-c.colors.statusbar.caret.bg = nord['nord15']
+c.colors.statusbar.caret.bg = nord['nord0']
 
 ## Foreground color of the statusbar in caret mode.
 ## Type: QssColor
@@ -329,7 +329,7 @@ c.colors.statusbar.caret.fg = nord['nord5']
 
 ## Background color of the statusbar in caret mode with a selection.
 ## Type: QssColor
-c.colors.statusbar.caret.selection.bg = nord['nord15']
+c.colors.statusbar.caret.selection.bg = nord['nord0']
 
 ## Foreground color of the statusbar in caret mode with a selection.
 ## Type: QssColor
@@ -337,7 +337,7 @@ c.colors.statusbar.caret.selection.fg = nord['nord5']
 
 ## Background color of the statusbar in command mode.
 ## Type: QssColor
-c.colors.statusbar.command.bg = nord['nord2']
+c.colors.statusbar.command.bg = nord['nord0']
 
 ## Foreground color of the statusbar in command mode.
 ## Type: QssColor
@@ -345,7 +345,7 @@ c.colors.statusbar.command.fg = nord['nord5']
 
 ## Background color of the statusbar in private browsing + command mode.
 ## Type: QssColor
-c.colors.statusbar.command.private.bg = nord['nord2']
+c.colors.statusbar.command.private.bg = "#181818"
 
 ## Foreground color of the statusbar in private browsing + command mode.
 ## Type: QssColor
@@ -353,11 +353,11 @@ c.colors.statusbar.command.private.fg = nord['nord5']
 
 ## Background color of the statusbar in insert mode.
 ## Type: QssColor
-c.colors.statusbar.insert.bg = nord['nord14']
+c.colors.statusbar.insert.bg = nord['nord0']
 
 ## Foreground color of the statusbar in insert mode.
 ## Type: QssColor
-c.colors.statusbar.insert.fg = nord['nord1']
+c.colors.statusbar.insert.fg = nord['nord5']
 
 ## Background color of the statusbar.
 ## Type: QssColor
@@ -369,7 +369,7 @@ c.colors.statusbar.normal.fg = nord['nord5']
 
 ## Background color of the statusbar in passthrough mode.
 ## Type: QssColor
-c.colors.statusbar.passthrough.bg = nord['nord10']
+c.colors.statusbar.passthrough.bg = nord['nord0']
 
 ## Foreground color of the statusbar in passthrough mode.
 ## Type: QssColor
@@ -377,7 +377,7 @@ c.colors.statusbar.passthrough.fg = nord['nord5']
 
 ## Background color of the statusbar in private browsing mode.
 ## Type: QssColor
-c.colors.statusbar.private.bg = nord['nord3']
+c.colors.statusbar.private.bg = "#181818"
 
 ## Foreground color of the statusbar in private browsing mode.
 ## Type: QssColor
@@ -686,7 +686,7 @@ c.colors.tabs.selected.odd.fg = nord['nord5']
 ##   - multiple-tabs: Show a confirmation if multiple tabs are opened.
 ##   - downloads: Show a confirmation if downloads are running
 ##   - never: Never show a confirmation.
-# c.confirm_quit = ['never']
+c.confirm_quit = ['downloads']
 
 ## Automatically start playing `<video>` elements.
 ## Type: Bool
@@ -1185,7 +1185,7 @@ c.content.pdfjs = True
 ## Valid values:
 ##   - top
 ##   - bottom
-# c.downloads.position = 'top'
+c.downloads.position = 'bottom'
 
 ## Automatically abort insecure (HTTP) downloads originating from secure
 ## (HTTPS) pages. For per-domain settings, the relevant URL is the URL
