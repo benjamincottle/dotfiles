@@ -2,12 +2,12 @@
 set nocompatible
 
 " No arrow keys
-noremap <Up> <Nop>
-noremap <Down> <Nop>
-noremap <Left> <Nop>
-noremap <Right> <Nop>
-noremap <PageUp> <Nop>
-noremap <PageDown> <Nop>
+for key in ['<Up>', '<Down>', '<Left>', '<Right>', '<PageUp>', '<PageDown>']
+  exec 'nnoremap' key '<Nop>'
+  exec 'inoremap' key '<Nop>'
+  exec 'cnoremap' key '<Nop>'
+  exec 'vnoremap' key '<Nop>'
+endfor
 
 " Turn on syntax highlighting
 syntax on
@@ -151,6 +151,10 @@ nmap <M-k> mz:m-2<cr>`z
 vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
 vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
 
+" Split below and to the right y default
+set splitbelow
+set splitright
+
 " You can split the window in Vim by typing :split or :vsplit.
 " Navigate the split view easier by pressing CTRL+j, CTRL+k, CTRL+h, or CTRL+l.
 nnoremap <c-j> <c-w>j
@@ -177,6 +181,9 @@ autocmd Filetype html setlocal tabstop=2 shiftwidth=2 expandtab
 
 " If the current file type is Python, show colcursorline
 "autocmd Filetype python setlocal cursorcolumn
+
+" Disable automatic comment insertion
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 "Toggle comment
 map gc :call Toggle()<CR>
