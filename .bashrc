@@ -60,10 +60,6 @@ up () {
 
 PS1="[\u@\h \W]\$ "
 
-if [ -r "$HOME/.cargo/env" ] ; then
-    . "$HOME/.cargo/env"
-fi
-
 test -r "~/.dir_colors" && eval $(dircolors ~/.dir_colors)
 
 # pretty colour bars :D
