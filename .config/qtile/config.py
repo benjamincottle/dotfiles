@@ -76,9 +76,10 @@ def show_graphs(qtile):
 
 mod = "mod4"
 terminal = "alacritty"
-browser = "google-chrome-stable"
+browser = "qutebrowser"
 filemanager = "pcmanfm"
 app_launcher = "rofi -show drun -theme ~/.config/rofi/rofi.rasi"
+passwd_manager = "rofi-pass" 
 
 keys = [
     Key([mod], "h", lazy.layout.left(), desc="Move focus to left"),
@@ -107,6 +108,7 @@ keys = [
 
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
     Key([mod], "period", lazy.spawn(app_launcher), desc="App launcher"),
+    Key([mod], "comma", lazy.spawn(passwd_manager), desc="Password manager"),
     Key([mod], "b", lazy.spawn(browser), desc="Launch browser"),
     Key([mod], "f", lazy.spawn(filemanager), desc="Launch file manager"),
     Key([mod], "g", lazy.function(show_graphs), desc="Show simple performance graphs"),
@@ -342,6 +344,7 @@ floating_layout = layout.Floating(
         Match(title="iwgtk"),
         Match(title="Customize Look and Feel"),
         Match(title="Qalculate!"),
+        Match(wm_class="Pinentry-gtk-2"),
     ]
 )
 auto_fullscreen = True
