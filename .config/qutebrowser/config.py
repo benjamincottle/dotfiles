@@ -289,11 +289,11 @@ c.colors.messages.info.fg = nord['nord5']
 
 ## Background color of a warning message.
 ## Type: QssColor
-c.colors.messages.warning.bg = nord['nord12']
+c.colors.messages.warning.bg = nord['nord0']
 
 ## Border color of a warning message.
 ## Type: QssColor
-c.colors.messages.warning.border = nord['nord12']
+c.colors.messages.warning.border = nord['nord3']
 
 ## Foreground color of a warning message.
 ## Type: QssColor
@@ -415,7 +415,7 @@ c.colors.statusbar.url.warn.fg = nord['nord12']
 
 ## Background color of the tab bar.
 ## Type: QssColor
-c.colors.tabs.bar.bg = nord['nord3']
+c.colors.tabs.bar.bg = nord['nord0']
 
 ## Background color of unselected even tabs.
 ## Type: QtColor
@@ -423,19 +423,19 @@ c.colors.tabs.even.bg = nord['nord0']
 
 ## Foreground color of unselected even tabs.
 ## Type: QtColor
-c.colors.tabs.even.fg = nord['nord5']
+c.colors.tabs.even.fg = nord['nord4']
 
 ## Color for the tab indicator on errors.
 ## Type: QtColor
-c.colors.tabs.indicator.error = nord['nord1']
+c.colors.tabs.indicator.error = nord['nord11']
 
 ## Color gradient start for the tab indicator.
 ## Type: QtColor
-# c.colors.tabs.indicator.start = '#0000aa'
+c.colors.tabs.indicator.start = nord['nord7']
 
 ## Color gradient end for the tab indicator.
 ## Type: QtColor
-# c.colors.tabs.indicator.stop = '#00aa00'
+c.colors.tabs.indicator.stop = nord['nord10'] #'#00aa00'
 
 ## Color gradient interpolation system for the tab indicator.
 ## Type: ColorSystem
@@ -452,39 +452,39 @@ c.colors.tabs.odd.bg = nord['nord0']
 
 ## Foreground color of unselected odd tabs.
 ## Type: QtColor
-c.colors.tabs.odd.fg = nord['nord5']
+c.colors.tabs.odd.fg = nord['nord4']
 
 ## Background color of pinned unselected even tabs.
 ## Type: QtColor
-# c.colors.tabs.pinned.even.bg = 'darkseagreen'
+c.colors.tabs.pinned.even.bg = nord['nord0']
 
 ## Foreground color of pinned unselected even tabs.
 ## Type: QtColor
-# c.colors.tabs.pinned.even.fg = 'white'
+c.colors.tabs.pinned.even.fg = nord['nord5']
 
 ## Background color of pinned unselected odd tabs.
 ## Type: QtColor
-# c.colors.tabs.pinned.odd.bg = 'seagreen'
+c.colors.tabs.pinned.odd.bg = nord['nord0']
 
 ## Foreground color of pinned unselected odd tabs.
 ## Type: QtColor
-# c.colors.tabs.pinned.odd.fg = 'white'
+c.colors.tabs.pinned.odd.fg = nord['nord5']
 
 ## Background color of pinned selected even tabs.
 ## Type: QtColor
-# c.colors.tabs.pinned.selected.even.bg = 'black'
+c.colors.tabs.pinned.selected.even.bg = nord['nord3']
 
 ## Foreground color of pinned selected even tabs.
 ## Type: QtColor
-# c.colors.tabs.pinned.selected.even.fg = 'white'
+c.colors.tabs.pinned.selected.even.fg = nord['nord5']
 
 ## Background color of pinned selected odd tabs.
 ## Type: QtColor
-# c.colors.tabs.pinned.selected.odd.bg = 'black'
+c.colors.tabs.pinned.selected.odd.bg = nord['nord3']
 
 ## Foreground color of pinned selected odd tabs.
 ## Type: QtColor
-# c.colors.tabs.pinned.selected.odd.fg = 'white'
+c.colors.tabs.pinned.selected.odd.fg = nord['nord5']
 
 ## Background color of selected even tabs.
 ## Type: QtColor
@@ -1272,7 +1272,7 @@ c.fonts.contextmenu = 'default_size default_family'
 ## font setting, it's replaced with the fonts listed here. If set to an
 ## empty value, a system-specific monospace default is used.
 ## Type: List of Font, or Font
-c.fonts.default_family = ['Hack Nerd Font Mono']
+c.fonts.default_family = ['Hack']
 
 ## Default font size to use. Whenever "default_size" is used in a font
 ## setting, it's replaced with the size listed here. Valid values are
