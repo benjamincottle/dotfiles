@@ -141,7 +141,7 @@ set showmode
 set showcmd
 
 " clear search
-map <leader><space> :let @/=''<cr> 
+map <leader><space> :nohlsearch<cr>
 
 " Move a line of text using ALT+[jk]
 execute "set <M-j>=\ej"
