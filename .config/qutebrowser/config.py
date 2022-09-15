@@ -1030,7 +1030,7 @@ c.content.headers.accept_language = 'da-DK,da;q=0.9,en-US,en;q=0.8'
 ## `:prompt-open-download --pdfjs` command (bound to `<Ctrl-p>` by
 ## default) can be used in the download prompt.
 ## Type: Bool
-c.content.pdfjs = True
+# c.content.pdfjs = False
 
 ## Allow websites to request persistent storage quota via
 ## `navigator.webkitPersistentStorage.requestQuota`.
