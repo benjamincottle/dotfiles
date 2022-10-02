@@ -188,7 +188,7 @@ groups.append(
             DropDown(
                 'calendar', 
                 'yad --no-buttons --calendar', 
-                x=0.83, 
+                x=0.88, 
                 y=0.01, 
                 width=0.1, 
                 height=0.2, 
@@ -253,6 +253,17 @@ top=bar.Bar(
             format="{percent:2.0%}",
         ),
         widget.Spacer(length=11),
+        widget.TextBox(
+            text="墳",
+            foreground=colour[2],
+            fontsize=22,
+        ),
+        widget.Spacer(length=5),
+        widget.PulseVolume(
+            foreground=colour[2],
+            volume_app="pavucontrol",
+        ),
+        widget.Spacer(length=11),
         widget.Wlan(
             foreground=colour[2],
             fontsize=28,
@@ -261,13 +272,6 @@ top=bar.Bar(
             interface="wlan0",
             mouse_callbacks = {'Button1': lambda:
                 qtile.cmd_spawn("iwgtk")},
-        ),
-        widget.Spacer(length=9),
-        widget.PulseVolume(
-            emoji=True,
-            foreground=colour[2],
-            volume_app="pavucontrol",
-            fontsize=16,
         ),
         widget.Spacer(length=10),
         widget.UPowerWidget(
@@ -285,7 +289,7 @@ top=bar.Bar(
         widget.Spacer(length=10),
         widget.CheckUpdates(
             update_interval = 1800,
-            distro = "Arch_checkupdates",
+            distro = "Arch_yay",
             display_format = "",
             no_update_string = "",
             foreground=colour[2],
