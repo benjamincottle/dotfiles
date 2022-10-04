@@ -2173,6 +2173,7 @@ c.tabs.show = 'always'
 # config.bind('<Ctrl-A>', 'navigate increment')
 # config.bind('<Ctrl-Alt-p>', 'print')
 # config.bind('<Ctrl-B>', 'scroll-page 0 -1')
+config.bind('<Ctrl-C>', 'hint links spawn --detach catt cast {hint-url}')
 # config.bind('<Ctrl-D>', 'scroll-page 0 0.5')
 # config.bind('<Ctrl-F5>', 'reload -f')
 # config.bind('<Ctrl-F>', 'scroll-page 0 1')
