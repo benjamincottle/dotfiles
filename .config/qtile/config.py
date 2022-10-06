@@ -55,7 +55,8 @@ def show_graphs(qtile):
             ),
             can_focus=True,
             highlight=None,
-        )
+        ),
+
     ]
 
     layout = PopupGridLayout(
@@ -213,21 +214,23 @@ top=bar.Bar(
         ),
         widget.Spacer(length=5),
         widget.GroupBox(
-            active=colour[2],
-            borderwidth=1,
-            inactive=nord[3],
-            this_screen_border=colour[2],
-            this_current_screen_border=colour[2],
-            urgent_border=nord[11],
-            urgent_text=nord[11],
-            other_screen_border=nord[3],
-            other_current_screen_border=nord[3],
-            hide_unused=True,
-            fontsize=10,
-            padding_y=2,
             padding_x=6,
+            padding_y=2,
             margin_x=0,
             margin_y=3,
+            invert_mouse_wheel=True,
+            disable_drag=True,
+            hide_unused=True,
+            highlight_method="block",
+            active=colour[2],
+            inactive=nord[3],
+            block_highlight_text_color=colour[2],
+            other_screen_border=nord[3],
+            other_current_screen_border=nord[3],
+            this_screen_border=nord[0],
+            this_current_screen_border=nord[0],
+            urgent_border=nord[11],
+            urgent_text=nord[11],
         ),
         widget.Spacer(length=10),
         widget.Prompt(
@@ -236,8 +239,19 @@ top=bar.Bar(
             cursor_color=colour[2],
             prompt="run: ",
         ),
-        widget.WindowName(
-            foreground=colour[2]
+        widget.TaskList(
+            foreground=colour[2],
+            border=nord[0],
+            margin=0,
+            padding=3,
+            padding_x=10,
+            highlight_method="block",
+            icon_size=0,
+            txt_floating="🗗 ",
+            txt_maximized="🗖 ",
+            txt_minimized="🗕 ",
+            urgent_alert_method="border",
+            urgent_border=nord[11],
         ),
         widget.TextBox(
             text="盛",
@@ -289,7 +303,7 @@ top=bar.Bar(
         widget.Spacer(length=10),
         widget.CheckUpdates(
             update_interval = 1800,
-            distro = "Arch_yay",
+            distro = "Arch_checkupdates",
             display_format = "",
             no_update_string = "",
             foreground=colour[2],
@@ -324,7 +338,10 @@ top=bar.Bar(
 )
 
 screens = [
-    Screen(top=top),
+    Screen(top=top,
+    wallpaper="~/.config/qtile/wallpaper.png",
+    wallpaper_mode="fill",
+    )
 ]
 
 mouse = [
@@ -337,7 +354,7 @@ dgroups_key_binder = None
 dgroups_app_rules = []  # type: list
 follow_mouse_focus = True
 bring_front_click = False
-cursor_warp = False
+cursor_warp = True
 
 floating_layout = layout.Floating(
     border_width= 0,
