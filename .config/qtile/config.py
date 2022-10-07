@@ -257,6 +257,10 @@ top=bar.Bar(
             text="盛",
             foreground=colour[2],
             fontsize=22,
+            mouse_callbacks = {'Button4': lambda:
+                qtile.cmd_spawn("xbacklight -dec 3"),
+                               'Button5': lambda: 
+                qtile.cmd_spawn("xbacklight -inc 3")},
         ),
         widget.Spacer(length=5),
         widget.Backlight(
@@ -265,12 +269,18 @@ top=bar.Bar(
             markup=True,
             step=5,
             format="{percent:2.0%}",
+            mouse_callbacks = {'Button4': lambda:
+                qtile.cmd_spawn("xbacklight -dec 3"),
+                               'Button5': lambda: 
+                qtile.cmd_spawn("xbacklight -inc 3")},
         ),
         widget.Spacer(length=11),
         widget.TextBox(
             text="墳",
             foreground=colour[2],
             fontsize=22,
+            mouse_callbacks = {'Button3': lambda:
+                qtile.cmd_spawn("pavucontrol")},
         ),
         widget.Spacer(length=5),
         widget.PulseVolume(
