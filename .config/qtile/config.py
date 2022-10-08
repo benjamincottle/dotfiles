@@ -253,6 +253,7 @@ top=bar.Bar(
             urgent_alert_method="border",
             urgent_border=nord[11],
         ),
+        widget.Spacer(length=5),
         widget.TextBox(
             text="盛",
             foreground=colour[2],
