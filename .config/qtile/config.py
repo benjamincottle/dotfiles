@@ -120,6 +120,7 @@ keys = [
     Key([mod, "shift"], "Tab", lazy.prev_layout(), desc="Move to previous layout"),
 
     Key([], "XF86AudioMute", lazy.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle"), desc="Toggle mute"),
+    Key([], "XF86AudioMicMute", lazy.spawn("pactl set-source-mute @DEFAULT_SOURCE@ toggle"), desc="Toggle mic mute"),
     Key([], "XF86AudioLowerVolume", lazy.spawn("pactl -- set-sink-volume @DEFAULT_SINK@ -5%"), desc="Lower volume"),
     Key([], "XF86AudioRaiseVolume", lazy.spawn("pactl -- set-sink-volume @DEFAULT_SINK@ +5%"), desc="Raise volume"),
     Key([], "XF86MonBrightnessUp", lazy.spawn("xbacklight -inc 5"), desc="Increase brightness"),
@@ -365,7 +366,7 @@ dgroups_key_binder = None
 dgroups_app_rules = []  # type: list
 follow_mouse_focus = True
 bring_front_click = False
-cursor_warp = True
+cursor_warp = False
 
 floating_layout = layout.Floating(
     border_width= 0,
@@ -387,20 +388,30 @@ reconfigure_screens = True
 # focus, should we respect this or not?
 auto_minimize = True
 
+
+
+def floating_dialogs(window):
+        window.floating = True
+
+
+
 @hook.subscribe.client_new
 def _swallow(window):
-    pid = window.window.get_net_wm_pid()
-    ppid = psutil.Process(pid).ppid()
-    cpids = {c.window.get_net_wm_pid(): wid for wid, c in window.qtile.windows_map.items()}
-    for i in range(5):
-        if not ppid:
-            return
-        if ppid in cpids:
-            parent = window.qtile.windows_map.get(cpids[ppid])
-            parent.minimized = True
-            window.parent = parent
-            return
-        ppid = psutil.Process(ppid).ppid()
+    dialog = window.window.get_wm_type() == 'dialog'
+    transient = window.window.get_wm_transient_for()
+    if not (dialog or transient):
+        pid = window.window.get_net_wm_pid()
+        ppid = psutil.Process(pid).ppid()
+        cpids = {c.window.get_net_wm_pid(): wid for wid, c in window.qtile.windows_map.items()}
+        for i in range(5):
+            if not ppid:
+                return
+            if ppid in cpids:
+                parent = window.qtile.windows_map.get(cpids[ppid])
+                parent.minimized = True
+                window.parent = parent
+                return
+            ppid = psutil.Process(ppid).ppid()
 
 @hook.subscribe.client_killed
 def _unswallow(window):
