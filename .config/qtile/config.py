@@ -9,77 +9,12 @@ from qtile_extras import widget
 from qtile_extras.popup.toolkit import PopupGridLayout, PopupRelativeLayout, PopupImage, PopupText, PopupWidget
 from update_notifier import UpdateNotifier
 
-def show_graphs(qtile):
-    controls = [
-        PopupWidget(
-            row=0,
-            col=0,
-            widget=widget.CPU(
-                foreground=colour[2],
-                format="    CPU {freq_current}GHz {load_percent}%"
-            ),
-            can_focus=True,
-            highlight=None,
-        ),
-        PopupWidget(
-            row=0,
-            col=1,
-            widget=widget.Memory(
-                foreground=colour[2],
-                format="   MEM {MemUsed: .0f}{mm} /{MemTotal: .0f}{mm}" 
-            ),
-            can_focus=True,
-            highlight=None,
-        ),
-        PopupWidget(
-            row=1,
-            col=0,
-            row_span=5,
-            widget=widget.CPUGraph(
-                border_color=nord[3],
-                fill_color=nord[3],
-                graph_color=nord[3],
-                type="linefill",
-            ),
-            can_focus=True,
-            highlight=None,
-        ),
-        PopupWidget(
-            row=1,
-            col=1,
-            row_span=5,
-            widget=widget.MemoryGraph(
-                border_color=nord[3],
-                fill_color=nord[3],
-                graph_color=nord[3],
-                type="linefill",
-            ),
-            can_focus=True,
-            highlight=None,
-        ),
-
-    ]
-
-    layout = PopupGridLayout(
-                 qtile,
-                 margin=5,
-                 width=600,
-                 height=200,
-                 rows=6,
-                 cols=2,
-                 controls=controls,
-                 background=colour[0],
-                 initial_focus=None,
-                 close_on_click=True,
-              )
-
-    layout.show(centered=True)
-
 
 mod = "mod4"
 terminal = "alacritty"
 browser = "qutebrowser"
 filemanager = "pcmanfm"
+taskmanager = "sysmontask"
 app_launcher = "rofi -show drun -theme ~/.config/rofi/rofi.rasi"
 passwd_manager = "rofi-pass" 
 display_setup = "/usr/local/bin/display_setup.sh"
@@ -114,7 +49,7 @@ keys = [
     Key([mod], "comma", lazy.spawn(passwd_manager), desc="Password manager"),
     Key([mod], "q", lazy.spawn(browser), desc="Launch browser"),
     Key([mod], "f", lazy.spawn(filemanager), desc="Launch file manager"),
-    Key([mod], "g", lazy.function(show_graphs), desc="Show simple performance graphs"),
+    Key([mod], "g", lazy.spawn(taskmanager), desc="Task Manager"),
     Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
     Key([mod], "space", lazy.widget["keyboardlayout"].next_keyboard(), desc="Next keyboard layout."),
     Key([mod], "p", lazy.spawn(display_setup), desc="Detect and setup display(s)"),
@@ -380,6 +315,7 @@ floating_layout = layout.Floating(
         Match(title="iwgtk"),
         Match(title="Customize Look and Feel"),
         Match(title="Qalculate!"),
+        Match(title="sysmontask"),
         Match(wm_class="Pinentry-gtk-2"),
     ]
 )
