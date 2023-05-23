@@ -8,7 +8,7 @@ Xft.lcdfilter: lcdfilter
 
 XTerm*termName: xterm-256color
 XTerm*renderFont: true
-XTerm*faceName: xft:Hack Nerd Font Mono, \
+XTerm*faceName: xft:Hack Nerd Font, \
                 xft:NotoEmoji Nerd Font Mono:size=12, \
                 xft:Monospace:style=Regular:size=12   
 XTerm*faceSize: 11

@@ -6,6 +6,8 @@
 [[ $- != *i* ]] && return
 
 export HISTCONTROL=ignoredups:erasedups
+HISTSIZE=-1
+HISTFILESIZE=-1
 
 ### SETTING OTHER ENVIRONMENT VARIABLES
 if [ -z "$XDG_CONFIG_HOME" ] ; then
@@ -16,6 +18,12 @@ if [ -z "$XDG_DATA_HOME" ] ; then
 fi
 if [ -z "$XDG_CACHE_HOME" ] ; then
     export XDG_CACHE_HOME="$HOME/.cache"
+fi
+if [ -d "$HOME/.local/bin" ] ; then
+    export PATH="$HOME/.local/bin:$PATH"
+fi
+if [-d "$HOME/.cargo/bin" ] ; then
+    export PATH="$HOME/.cargo/bin:$PATH"
 fi
 
 shopt -s autocd # change to named directory
@@ -35,7 +43,8 @@ alias cp="cp -i"
 alias mv="mv -i"
 alias rm="rm -i"
 alias jctl="journalctl -p 3 -xb"
-alias vi="vim"
+alias vi="lvim"
+alias vim="lvim"
 alias config="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
 
 # navigation
@@ -75,4 +84,6 @@ done
 echo -en "\033[1;37m██"
 echo -e "\033[0m"
 echo
+
+source /usr/share/nvm/init-nvm.sh
 

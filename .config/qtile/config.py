@@ -1,4 +1,5 @@
 import os
+import time
 import psutil
 import subprocess
 from libqtile import qtile, bar, layout, hook
@@ -6,7 +7,7 @@ from libqtile.config import Click, Drag, Group, Key, Match, Screen, ScratchPad, 
 from libqtile.lazy import lazy
 from qtile_extras import widget
 from qtile_extras.popup.toolkit import PopupGridLayout, PopupRelativeLayout, PopupImage, PopupText, PopupWidget
-
+from update_notifier import UpdateNotifier
 
 def show_graphs(qtile):
     controls = [
@@ -81,6 +82,7 @@ browser = "qutebrowser"
 filemanager = "pcmanfm"
 app_launcher = "rofi -show drun -theme ~/.config/rofi/rofi.rasi"
 passwd_manager = "rofi-pass" 
+display_setup = "/usr/local/bin/display_setup.sh"
 
 keys = [
     Key([mod], "h", lazy.layout.left(), desc="Move focus to left"),
@@ -115,6 +117,7 @@ keys = [
     Key([mod], "g", lazy.function(show_graphs), desc="Show simple performance graphs"),
     Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
     Key([mod], "space", lazy.widget["keyboardlayout"].next_keyboard(), desc="Next keyboard layout."),
+    Key([mod], "p", lazy.spawn(display_setup), desc="Detect and setup display(s)"),
 
     Key([mod], "Tab", lazy.next_layout(), desc="Move to next layout"),
     Key([mod, "shift"], "Tab", lazy.prev_layout(), desc="Move to previous layout"),
@@ -163,6 +166,10 @@ colour = [
     "#212529", "#6c6f74", "#81858b"
     ]
 
+bar_height = 32
+bar_icon_size = 28
+bar_text_size = 18
+
 layout_theme = {
     "border_width": 2,
     "margin": 8,
@@ -173,13 +180,12 @@ layout_theme = {
 layouts = [
     layout.MonadTall(**layout_theme),
     layout.MonadWide(**layout_theme),
-    layout.Max(**layout_theme),
-    layout.Floating(**layout_theme),
 ]
 
 widget_defaults = dict(
     font="Hack Nerd Font Mono",
-    fontsize=14,
+    fontsize=bar_text_size,
+    foreground=colour[2],
     padding=0,
 )
 extension_defaults = widget_defaults.copy()
@@ -190,8 +196,8 @@ groups.append(
             DropDown(
                 'calendar', 
                 'yad --no-buttons --calendar', 
-                x=0.88, 
-                y=0.01, 
+                x=0.898, 
+                y=0.001, 
                 width=0.1, 
                 height=0.2, 
                 opacity=1,
@@ -204,14 +210,11 @@ top=bar.Bar(
     [
         widget.Spacer(length=10),
         widget.CurrentLayoutIcon(
-            foreground=colour[2],
             use_mask=True,
             scale=0.8,
         ),
         widget.Spacer(length=5),
         widget.CurrentLayout(
-            foreground=colour[2], 
-            width=75,
         ),
         widget.Spacer(length=5),
         widget.GroupBox(
@@ -236,12 +239,10 @@ top=bar.Bar(
         widget.Spacer(length=10),
         widget.Prompt(
             padding=20,
-            foreground=colour[2], 
             cursor_color=colour[2],
             prompt="run: ",
         ),
         widget.TaskList(
-            foreground=colour[2],
             border=nord[0],
             margin=0,
             padding=3,
@@ -257,50 +258,46 @@ top=bar.Bar(
         widget.Spacer(length=5),
         widget.TextBox(
             text="盛",
-            foreground=colour[2],
-            fontsize=22,
+            fontsize=bar_icon_size,
             mouse_callbacks = {'Button4': lambda:
-                qtile.cmd_spawn("xbacklight -dec 3"),
+                qtile.spawn("xbacklight -dec 3"),
                                'Button5': lambda: 
-                qtile.cmd_spawn("xbacklight -inc 3")},
+                qtile.spawn("xbacklight -inc 3")},
         ),
         widget.Spacer(length=5),
         widget.Backlight(
             backlight_name="intel_backlight",
-            foreground=colour[2],
             markup=True,
             step=5,
             format="{percent:2.0%}",
             mouse_callbacks = {'Button4': lambda:
-                qtile.cmd_spawn("xbacklight -dec 3"),
+                qtile.spawn("xbacklight -dec 3"),
                                'Button5': lambda: 
-                qtile.cmd_spawn("xbacklight -inc 3")},
+                qtile.spawn("xbacklight -inc 3")},
         ),
         widget.Spacer(length=11),
         widget.TextBox(
             text="墳",
-            foreground=colour[2],
-            fontsize=22,
+            fontsize=bar_icon_size,
             mouse_callbacks = {'Button3': lambda:
-                qtile.cmd_spawn("pavucontrol")},
+                qtile.spawn("pavucontrol")},
         ),
         widget.Spacer(length=5),
         widget.PulseVolume(
-            foreground=colour[2],
             volume_app="pavucontrol",
         ),
         widget.Spacer(length=11),
         widget.Wlan(
-            foreground=colour[2],
-            fontsize=28,
+            fontsize=bar_icon_size,
             format="",
             disconnected_message="睊",
             interface="wlan0",
             mouse_callbacks = {'Button1': lambda:
-                qtile.cmd_spawn("iwgtk")},
+                qtile.spawn("iwgtk")},
         ),
         widget.Spacer(length=10),
         widget.UPowerWidget(
+            battery_name="BAT0",
             battery_height=10,
             battery_width=20,
             border_charge_colour=nord[7],
@@ -310,42 +307,48 @@ top=bar.Bar(
             fill_low=nord[12],
             fill_normal=colour[2],
             text_displaytime=3,
-            foreground=colour[2],
         ),
         widget.Spacer(length=10),
-        widget.CheckUpdates(
-            update_interval = 1800,
+        UpdateNotifier(
+            update_interval = 900,
             distro = "Arch_checkupdates",
+            initial_text = "",
             display_format = "",
             no_update_string = "",
-            foreground=colour[2],
-            fontsize=28,
-            colour_have_updates=nord[7],
-            colour_no_updates=colour[2],
+            fontsize=bar_icon_size,
+            colour_no_updates = colour[2],
+            colour_updates_available = nord[7],
+            colour_kernel_updated = nord[12],
+            colour_libs_updated = nord[11],
+            tooltip_background = colour[0],
+            tooltip_color = colour[2],
+            tooltip_delay = 0,
+            tooltip_font = widget_defaults["font"],
+            tooltip_fontsize = 26,
+            tooltip_padding = 20,
             mouse_callbacks = {'Button1': lambda:
-                qtile.cmd_spawn(terminal + ' -e yay')},
+                qtile.spawn(terminal + ' -e /usr/local/bin/up.sh')},
         ),
+        widget.Spacer(length=5),
         widget.Systray(
             padding=5,
-            icon_size=26,
+            icon_size=bar_icon_size,
         ),
-        widget.Spacer(length=10),
+        widget.Spacer(length=5),
         widget.Clock(
-            format="%a %d %b, %H:%M:%S", 
-            foreground=colour[2],
+            format="%H:%M:%S", 
             update_interval=5,
             mouse_callbacks = {'Button1': lazy.group['scratchpad'].dropdown_toggle('calendar')},
         ),
         widget.Spacer(length=10),
         widget.KeyboardLayout(
-            foreground=colour[2],
             configured_keyboards=['us', 'dk'],
             display_map={'us': 'en', 'dk': 'dk'},
             mouse_callbacks = {'Button1': lazy.widget["keyboardlayout"].next_keyboard()},
         ),
         widget.Spacer(length=15),
     ],
-    24,
+    bar_height,
     background = colour[0],
 )
 
@@ -388,12 +391,8 @@ reconfigure_screens = True
 # focus, should we respect this or not?
 auto_minimize = True
 
-
-
 def floating_dialogs(window):
         window.floating = True
-
-
 
 @hook.subscribe.client_new
 def _swallow(window):
@@ -422,10 +421,6 @@ def _unswallow(window):
 def start_once():
     home = os.path.expanduser('~')
     subprocess.call([home + '/.config/qtile/autostart.sh'])
-
-@hook.subscribe.startup
-def startup():
-    top.show(False)
 
 # When using the Wayland backend, this can be used to configure input devices.
 wl_input_rules = None

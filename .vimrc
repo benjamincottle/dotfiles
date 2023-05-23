@@ -1,6 +1,21 @@
 " Don't try to be vi compatible
 set nocompatible
 
+" Highlight using 24-bit color
+set termguicolors
+
+" Install vim plug
+let data_dir = '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+call plug#begin()
+" Highlight color names and codes in the same color that they represent.
+Plug 'ap/vim-css-color'
+call plug#end()
+
 " No arrow keys
 for key in ['<Up>', '<Down>', '<Left>', '<Right>', '<PageUp>', '<PageDown>']
   exec 'nnoremap' key '<Nop>'

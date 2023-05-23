@@ -32,4 +32,13 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
  unset f
 fi
 
+if [ -x /usr/bin/numlockx ]; then
+      /usr/bin/numlockx on
+fi
+
+xset dpms 1800 1800 1800
+xset s 900 900
+
+/usr/local/bin/display_setup.sh
 exec qtile start
+

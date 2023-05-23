@@ -11,7 +11,7 @@
 
 ## This is here so configs done via the GUI are still loaded.
 ## Remove it to not load settings done via the GUI.
-config.load_autoconfig(False)
+config.load_autoconfig(True)
 
 ## Aliases for commands. The keys of the given dictionary are the
 ## aliases, while the values are the commands they map to.
@@ -506,6 +506,7 @@ c.colors.tabs.selected.odd.fg = nord['nord5']
 ## color).
 ## Type: QtColor
 # c.colors.webpage.bg = 'white'
+c.colors.webpage.bg = nord['nord0']
 
 ## Which algorithm to use for modifying how colors are rendered with
 ## darkmode. The `lightness-cielab` value was added with QtWebEngine 5.14
@@ -533,7 +534,7 @@ c.colors.tabs.selected.odd.fg = nord['nord5']
 ## `colors.webpage.darkmode.threshold.background` to 205.  - "With
 ## selective inversion of everything": Combines the two variants   above.
 ## Type: Bool
-# c.colors.webpage.darkmode.enabled = False
+c.colors.webpage.darkmode.enabled = True
 
 ## Render all colors as grayscale. This only has an effect when
 ## `colors.webpage.darkmode.algorithm` is set to `lightness-hsl` or
@@ -2058,7 +2059,7 @@ c.tabs.show = 'always'
 ## Page to open if :open -t/-b/-w is used without URL. Use `about:blank`
 ## for a blank page.
 ## Type: FuzzyUrl
-# c.url.default_page = 'https://start.duckduckgo.com/'
+c.url.default_page = 'https://www.google.com/'
 
 ## URL segments where `:navigate increment/decrement` will search for a
 ## number.
@@ -2095,11 +2096,11 @@ c.tabs.show = 'always'
 ## the search engine name to the search term, e.g. `:open google
 ## qutebrowser`.
 ## Type: Dict
-# c.url.searchengines = {'DEFAULT': 'https://duckduckgo.com/?q={}'}
+c.url.searchengines = {'DEFAULT': 'https://www.google.com/search?q={}'}
 
 ## Page(s) to open at the start.
 ## Type: List of FuzzyUrl, or FuzzyUrl
-# c.url.start_pages = ['https://start.duckduckgo.com']
+c.url.start_pages = ['https://www.google.com']
 
 ## URL parameters to strip with `:yank url`.
 ## Type: List of String
@@ -2212,11 +2213,11 @@ config.bind('C', 'hint links spawn --detach catt cast {hint-url}')
 # config.bind('F', 'hint all tab')
 # config.bind('G', 'scroll-to-perc')
 # config.bind('H', 'back')
-config.bind('<', 'back')
+config.bind('<Alt-Left>', 'back')
 # config.bind('J', 'tab-next')
 # config.bind('K', 'tab-prev')
 # config.bind('L', 'forward')
-config.bind('>', 'forward')
+config.bind('<Alt-Right>', 'forward')
 # config.bind('M', 'bookmark-add')
 # config.bind('N', 'search-prev')
 # config.bind('O', 'set-cmd-text -s :open -t')
